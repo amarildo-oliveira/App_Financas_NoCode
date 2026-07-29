@@ -20,34 +20,36 @@ export function CategoryPieChart({ data }: { data: CategorySlice[] }) {
       </CardHeader>
       <CardContent>
         {hasData ? (
-          <div className="h-72 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={data}
-                  dataKey="total"
-                  nameKey="category"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={90}
-                  paddingAngle={2}
-                >
-                  {data.map((entry) => (
-                    <Cell
-                      key={entry.category}
-                      fill={getCategoryColor(entry.category)}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip
-                  formatter={(value, _name, item) => [
-                    formatCurrency(Number(value)),
-                    getCategoryLabel(String(item.payload.category)),
-                  ]}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="mt-2 flex flex-wrap justify-center gap-3">
+          <>
+            <div className="h-72 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={data}
+                    dataKey="total"
+                    nameKey="category"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={90}
+                    paddingAngle={2}
+                  >
+                    {data.map((entry) => (
+                      <Cell
+                        key={entry.category}
+                        fill={getCategoryColor(entry.category)}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, _name, item) => [
+                      formatCurrency(Number(value)),
+                      getCategoryLabel(String(item.payload.category)),
+                    ]}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 flex flex-wrap justify-center gap-3">
               {data.map((entry) => (
                 <div
                   key={entry.category}
@@ -61,7 +63,7 @@ export function CategoryPieChart({ data }: { data: CategorySlice[] }) {
                 </div>
               ))}
             </div>
-          </div>
+          </>
         ) : (
           <div className="flex h-72 items-center justify-center text-sm text-muted-foreground">
             Nenhuma despesa registrada neste período.
