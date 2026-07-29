@@ -15,10 +15,15 @@ export function Hero() {
         entenda para onde vai seu dinheiro com gráficos claros por categoria.
       </p>
       <div className="flex flex-col gap-3 sm:flex-row">
-        <Button render={<Link href="/signup" />} size="lg">
+        <Button render={<Link href="/signup" />} nativeButton={false} size="lg">
           Começar gratuitamente
         </Button>
-        <Button render={<Link href="/login" />} variant="outline" size="lg">
+        <Button
+          render={<Link href="/login" />}
+          nativeButton={false}
+          variant="outline"
+          size="lg"
+        >
           Já tenho conta
         </Button>
       </div>

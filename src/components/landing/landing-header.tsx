@@ -11,10 +11,12 @@ export function LandingHeader() {
           Finanças Pessoais
         </Link>
         <div className="flex items-center gap-2">
-          <Button render={<Link href="/login" />} variant="ghost">
+          <Button render={<Link href="/login" />} nativeButton={false} variant="ghost">
             Entrar
           </Button>
-          <Button render={<Link href="/signup" />}>Cadastrar</Button>
+          <Button render={<Link href="/signup" />} nativeButton={false}>
+            Cadastrar
+          </Button>
         </div>
       </div>
     </header>
