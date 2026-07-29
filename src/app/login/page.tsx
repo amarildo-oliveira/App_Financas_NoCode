@@ -34,9 +34,9 @@ async function login(formData: FormData) {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; message?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, message } = await searchParams;
 
   return (
     <div className="flex min-h-svh items-center justify-center bg-muted/30 p-4">
@@ -48,6 +48,11 @@ export default async function LoginPage({
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {message && (
+            <p className="mb-4 rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+              {message}
+            </p>
+          )}
           <form action={login} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="email">E-mail</Label>
