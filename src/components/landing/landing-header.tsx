@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function LandingHeader() {
   return (
@@ -11,6 +12,7 @@ export function LandingHeader() {
           Finanças Pessoais
         </Link>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Button render={<Link href="/login" />} nativeButton={false} variant="ghost">
             Entrar
           </Button>
