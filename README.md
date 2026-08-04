@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Finanças Pessoais
 
-## Getting Started
+App de controle financeiro pessoal construído com Next.js, Supabase (auth + Postgres com RLS) e Base UI.
 
-First, run the development server:
+## Rodando localmente
+
+1. Instale as dependências:
+
+```bash
+npm install
+```
+
+2. Copie `.env.example` para `.env.local` e preencha com as credenciais do seu projeto Supabase (Project Settings → API):
+
+```bash
+cp .env.example .env.local
+```
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-anon
+```
+
+> A chave `anon` é pública por design do Supabase — o acesso aos dados é protegido por Row Level Security (RLS), não pelo sigilo dessa chave. Nunca coloque a `service_role key` no frontend nem em variáveis `NEXT_PUBLIC_*`; este projeto não a utiliza.
+
+3. Rode as migrations em `supabase/migrations/` no SQL Editor do seu projeto Supabase (cria a tabela `transactions` e as policies de RLS).
+
+4. Inicie o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy na Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Importe o repositório no [Vercel](https://vercel.com/new).
+2. Em **Project Settings → Environment Variables**, cadastre as mesmas variáveis do `.env.example`:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+3. Nunca commite `.env.local` (já está no `.gitignore`) — as credenciais reais só devem existir no painel da Vercel e no seu ambiente local.
+4. Rode as migrations em `supabase/migrations/` no projeto Supabase de produção antes do primeiro deploy.
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` — desenvolvimento com Turbopack
+- `npm run build` — build de produção
+- `npm run start` — serve o build de produção
+- `npm run lint` — ESLint
