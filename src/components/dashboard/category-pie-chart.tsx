@@ -10,13 +10,21 @@ export interface CategorySlice {
   total: number;
 }
 
-export function CategoryPieChart({ data }: { data: CategorySlice[] }) {
+export function CategoryPieChart({
+  data,
+  title = "Despesas por Categoria",
+  emptyMessage = "Nenhuma despesa registrada neste período.",
+}: {
+  data: CategorySlice[];
+  title?: string;
+  emptyMessage?: string;
+}) {
   const hasData = data.length > 0;
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Despesas por Categoria</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         {hasData ? (
@@ -66,7 +74,7 @@ export function CategoryPieChart({ data }: { data: CategorySlice[] }) {
           </>
         ) : (
           <div className="flex h-72 items-center justify-center text-sm text-muted-foreground">
-            Nenhuma despesa registrada neste período.
+            {emptyMessage}
           </div>
         )}
       </CardContent>

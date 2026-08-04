@@ -32,14 +32,15 @@ export default async function DashboardPage({
     .reduce((sum, t) => sum + Number(t.amount), 0);
 
   const expensesByCategory = new Map<string, number>();
+  const incomeByCategory = new Map<string, number>();
   for (const t of transactions) {
-    if (t.type !== "expense") continue;
-    expensesByCategory.set(
-      t.category,
-      (expensesByCategory.get(t.category) ?? 0) + Number(t.amount)
-    );
+    const byCategory = t.type === "expense" ? expensesByCategory : incomeByCategory;
+    byCategory.set(t.category, (byCategory.get(t.category) ?? 0) + Number(t.amount));
   }
-  const categoryData = Array.from(expensesByCategory.entries()).map(
+  const expenseCategoryData = Array.from(expensesByCategory.entries()).map(
+    ([category, total]) => ({ category, total })
+  );
+  const incomeCategoryData = Array.from(incomeByCategory.entries()).map(
     ([category, total]) => ({ category, total })
   );
 
@@ -57,7 +58,14 @@ export default async function DashboardPage({
 
       <SummaryCards totalIncome={totalIncome} totalExpense={totalExpense} />
 
-      <CategoryPieChart data={categoryData} />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <CategoryPieChart
+          data={incomeCategoryData}
+          title="Receitas por Categoria"
+          emptyMessage="Nenhuma receita registrada neste período."
+        />
+        <CategoryPieChart data={expenseCategoryData} />
+      </div>
     </div>
   );
 }
