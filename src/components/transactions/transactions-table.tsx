@@ -14,6 +14,7 @@ import {
 import { TransactionForm } from "@/components/transactions/transaction-form";
 import { DeleteTransactionButton } from "@/components/transactions/delete-transaction-button";
 import { getCategoryLabel } from "@/lib/categories";
+import { getPaymentMethodLabel } from "@/lib/payment-methods";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
 import type { Transaction } from "@/lib/types";
 
@@ -39,6 +40,7 @@ export function TransactionsTable({
               <TableHead>Data</TableHead>
               <TableHead>Descrição</TableHead>
               <TableHead>Categoria</TableHead>
+              <TableHead>Pagamento</TableHead>
               <TableHead className="text-right">Valor</TableHead>
               <TableHead className="w-24 text-right">Ações</TableHead>
             </TableRow>
@@ -52,6 +54,9 @@ export function TransactionsTable({
                 <TableCell>{t.description}</TableCell>
                 <TableCell>
                   <Badge variant="secondary">{getCategoryLabel(t.category)}</Badge>
+                </TableCell>
+                <TableCell className="whitespace-nowrap text-muted-foreground">
+                  {getPaymentMethodLabel(t.payment_method)}
                 </TableCell>
                 <TableCell
                   className={cn(
@@ -100,7 +105,12 @@ export function TransactionsTable({
               </div>
             </div>
             <div className="mt-3 flex items-center justify-between">
-              <Badge variant="secondary">{getCategoryLabel(t.category)}</Badge>
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary">{getCategoryLabel(t.category)}</Badge>
+                <span className="text-xs text-muted-foreground">
+                  {getPaymentMethodLabel(t.payment_method)}
+                </span>
+              </div>
               <div className="flex gap-1">
                 <TransactionForm
                   transaction={t}
