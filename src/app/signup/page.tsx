@@ -12,6 +12,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+function translateSignupError(message: string): string {
+  const translations: Record<string, string> = {
+    "User already registered": "Este e-mail já está cadastrado. Faça login.",
+    "Password should be at least 6 characters":
+      "A senha deve ter pelo menos 6 caracteres.",
+    "Unable to validate email address: invalid format":
+      "O e-mail informado é inválido.",
+    "Signup requires a valid password": "Informe uma senha válida.",
+    "Email rate limit exceeded":
+      "Muitas tentativas de cadastro. Aguarde alguns minutos e tente novamente.",
+  };
+
+  return translations[message] ?? "Não foi possível concluir o cadastro. Tente novamente.";
+}
+
 async function signup(formData: FormData) {
   "use server";
 
@@ -19,16 +34,27 @@ async function signup(formData: FormData) {
   const password = formData.get("password") as string;
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
   });
 
   if (error) {
-    redirect(`/signup?error=${encodeURIComponent(error.message)}`);
+    redirect(`/signup?error=${encodeURIComponent(translateSignupError(error.message))}`);
   }
 
-  redirect("/login?message=Verifique seu e-mail para confirmar o cadastro");
+  // Quando o e-mail já pertence a uma conta confirmada, o Supabase não retorna
+  // erro (para não revelar quais e-mails existem) — o único sinal é um array
+  // `identities` vazio, indicando que nenhuma conta nova foi criada.
+  if (data.user && data.user.identities?.length === 0) {
+    redirect(
+      `/signup?error=${encodeURIComponent("Este e-mail já está cadastrado. Faça login.")}`
+    );
+  }
+
+  redirect(
+    "/login?message=Cadastro realizado com sucesso! Verifique seu e-mail para confirmar a conta."
+  );
 }
 
 export default async function SignupPage({
